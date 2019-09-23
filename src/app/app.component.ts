@@ -6,6 +6,7 @@ import {COURSES} from '../db-data';
 import {CoursesService} from './courses/courses.service';
 import {createCustomElement} from '@angular/elements';
 import {CourseTitleComponent} from './course-title/course-title.component';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 
 @Component({
@@ -15,7 +16,8 @@ import {CourseTitleComponent} from './course-title/course-title.component';
 })
 export class AppComponent implements OnInit {
 
-    courses = COURSES;
+    // courses = COURSES;
+    courses;
 
     // coursesTotal = this.courses.length;
 
@@ -25,15 +27,22 @@ export class AppComponent implements OnInit {
     //     private injector: Injector) {
 
     // }
-    constructor() {
+    constructor(private http: HttpClient) {
 
     }
 
     ngOnInit() {
+        // const htmlElement = createCustomElement(CourseTitleComponent, {injector:this.injector});
+        // customElements.define('course-title', htmlElement);
+        //
+        const params = new HttpParams()
+            .set('page', '1')
+            .set('pageSize', '10');
 
-        const htmlElement = createCustomElement(CourseTitleComponent, {injector:this.injector});
-
-        customElements.define('course-title', htmlElement);
+        this.http.get('/api/courses', {params})
+            .subscribe(
+              courses => this.courses = courses
+            );
 
     }
 
@@ -44,10 +53,10 @@ export class AppComponent implements OnInit {
     }
 
     save(course: Course) {
-        this.coursesService.saveCourse(course)
-            .subscribe(
-                () => console.log('Course Saved!')
-            );
+        // this.coursesService.saveCourse(course)
+        //     .subscribe(
+        //         () => console.log('Course Saved!')
+        //     );
     }
 
 
