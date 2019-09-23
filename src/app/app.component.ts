@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, Inject, 
 import {Course} from './model/course';
 import {Observable} from 'rxjs';
 import {AppConfig, CONFIG_TOKEN} from './config';
-import {COURSES} from '../db-data';
+// import {COURSES} from '../db-data';
 import {CoursesService} from './courses/courses.service';
 import {createCustomElement} from '@angular/elements';
 import {CourseTitleComponent} from './course-title/course-title.component';
@@ -16,8 +16,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class AppComponent implements OnInit {
 
-    // courses = COURSES;
-    courses;
+    courses$: Observable<Course[]>;
+
+    constructor(private http: HttpClient,
+                private couresService: CoursesService) {
+
+    }
 
     // coursesTotal = this.courses.length;
 
@@ -27,28 +31,26 @@ export class AppComponent implements OnInit {
     //     private injector: Injector) {
 
     // }
-    constructor(private http: HttpClient) {
-
-    }
 
     ngOnInit() {
-        // const htmlElement = createCustomElement(CourseTitleComponent, {injector:this.injector});
-        // customElements.define('course-title', htmlElement);
-        //
+
+        console.log(this.couresService);
+
         const params = new HttpParams()
             .set('page', '1')
             .set('pageSize', '10');
 
-        this.http.get('/api/courses', {params})
-            .subscribe(
-              courses => this.courses = courses
-            );
+        this.courses$ = this.http.get<Course[]>('/api/courses', {params});
+
+        // const htmlElement = createCustomElement(CourseTitleComponent, {injector:this.injector});
+        // customElements.define('course-title', htmlElement);
+        //
 
     }
 
     onEditCourse() {
 
-            this.courses[1].category = 'ADVANCED';
+            this.courses$[1].category = 'ADVANCED';
 
     }
 
