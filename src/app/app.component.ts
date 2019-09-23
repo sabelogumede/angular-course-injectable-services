@@ -18,8 +18,7 @@ export class AppComponent implements OnInit {
 
     courses$: Observable<Course[]>;
 
-    constructor(private http: HttpClient,
-                private couresService: CoursesService) {
+    constructor(private couresService: CoursesService) {
 
     }
 
@@ -34,17 +33,11 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
 
-        console.log(this.couresService);
-
-        const params = new HttpParams()
-            .set('page', '1')
-            .set('pageSize', '10');
-
-        this.courses$ = this.http.get<Course[]>('/api/courses', {params});
-
         // const htmlElement = createCustomElement(CourseTitleComponent, {injector:this.injector});
         // customElements.define('course-title', htmlElement);
         //
+
+        this.courses$ = this.couresService.loadCourses();
 
     }
 
