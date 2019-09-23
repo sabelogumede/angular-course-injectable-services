@@ -14,7 +14,6 @@ import {Course} from '../../model/course';
 import {CoursesService} from '../courses.service';
 
 
-
 @Component({
     selector: 'course-card',
     templateUrl: './course-card.component.html',
@@ -30,8 +29,6 @@ export class CourseCardComponent implements  OnInit {
 
     @Output('courseChanged')
     courseEmitter = new EventEmitter<Course>();
-
-
 
 
     constructor(private coursesService: CoursesService,
